@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class WardrobeBehaviour : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class WardrobeBehaviour : MonoBehaviour
     private GameObject currentHeadAccessory;
     private GameObject currentFaceAccessory;
 
+    public event Action<string> OnHatAccessoryChange;
+    
     private void Start()
     {
         // Find the pet game object by tag
@@ -99,6 +102,25 @@ public class WardrobeBehaviour : MonoBehaviour
             currentHeadAccessory.transform.localPosition = Vector3.zero;
             currentHeadAccessory.transform.localRotation = Quaternion.identity;
         }
+        
+        OnHatAccessoryChange?.Invoke(getAccessoryType());
+    }
+
+    private string getAccessoryType()
+    {
+        if (currentHeadAccessory == null)
+        {
+            return "None";
+        }
+
+        var accessoryIdentifier = currentHeadAccessory.GetComponent<AccessoryIdentifier>();
+
+        if (accessoryIdentifier == null)
+        {
+            Debug.LogError("Accessory identifier not found");
+        }
+        
+        return accessoryIdentifier.AccessoryID;
     }
     
     public void SwitchFaceAccessory()

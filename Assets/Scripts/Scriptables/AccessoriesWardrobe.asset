@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2382a796afa474587e778d0f92b469c, type: 3}
+  m_Name: AccessoriesWardrobe
+  m_EditorClassIdentifier: 
+  HeadAccessories:
+  - {fileID: 178826536806582873, guid: b900a908c0a066047b5797d4ea8d1320, type: 3}
+  - {fileID: 2921118278010874480, guid: 12865091f363e5448ab16f8f6effcfbf, type: 3}
+  FaceAccessories:
+  - {fileID: 3810804275677342627, guid: ddbe0a16110c98642ac4050ccca8feab, type: 3}
+  - {fileID: 1057963046678394846, guid: c19af72d0001ce34c82ba1c7a3f5cea4, type: 3}

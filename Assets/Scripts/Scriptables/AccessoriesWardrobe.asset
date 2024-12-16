@@ -15,6 +15,6 @@ MonoBehaviour:
   HeadAccessories:
   - {fileID: 178826536806582873, guid: b900a908c0a066047b5797d4ea8d1320, type: 3}
   - {fileID: 2921118278010874480, guid: 12865091f363e5448ab16f8f6effcfbf, type: 3}
-  FaceAccessories:
-  - {fileID: 3810804275677342627, guid: ddbe0a16110c98642ac4050ccca8feab, type: 3}
-  - {fileID: 1057963046678394846, guid: c19af72d0001ce34c82ba1c7a3f5cea4, type: 3}
+  NeckAccessories:
+  - {fileID: 4667520719924146439, guid: 337d982c56160cd4eba3da7e8a1aa03d, type: 3}
+  - {fileID: 6753226481842298460, guid: 9c3c1d3f79ca8a345bd9ced599bebf58, type: 3}

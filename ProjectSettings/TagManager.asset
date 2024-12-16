@@ -15,6 +15,7 @@ TagManager:
   - HeadAccessory_Cap
   - HeadAccessory_Horns
   - PetHouse
+  - NeckAccessorySlot
   layers:
   - Default
   - TransparentFX

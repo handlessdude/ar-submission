@@ -8,11 +8,13 @@ public class WardrobeBehaviour : MonoBehaviour
 
     private GameObject pet;
     private GameObject headAccessorySlot;
-    private GameObject faceAccessorySlot;
+    private GameObject neckAccessorySlot;
     private GameObject currentHeadAccessory;
-    private GameObject currentFaceAccessory;
+    private GameObject currentNeckAccessory;
 
     public event Action<string> OnHatAccessoryChange;
+    
+    public event Action<string> OnNeckAccessoryChange;
     
     private void Start()
     {
@@ -27,9 +29,9 @@ public class WardrobeBehaviour : MonoBehaviour
 
         // Find accessory slots by tag
         headAccessorySlot = ComponentFinder.FindChildWithTag(pet, "HeadAccessorySlot");
-        faceAccessorySlot = ComponentFinder.FindChildWithTag(pet, "FaceAccessorySlot");
+        neckAccessorySlot = ComponentFinder.FindChildWithTag(pet, "NeckAccessorySlot");
 
-        if (headAccessorySlot == null || faceAccessorySlot == null)
+        if (headAccessorySlot == null || neckAccessorySlot == null)
         {
             Debug.LogError("Accessory slots not found on pet.");
             return;
@@ -37,89 +39,55 @@ public class WardrobeBehaviour : MonoBehaviour
 
         // Retrieve current head and face accessories (if any)
         currentHeadAccessory = headAccessorySlot.transform.childCount > 0 ? headAccessorySlot.transform.GetChild(0).gameObject : null;
-        currentFaceAccessory = faceAccessorySlot.transform.childCount > 0 ? faceAccessorySlot.transform.GetChild(0).gameObject : null;
+        currentNeckAccessory = neckAccessorySlot.transform.childCount > 0 ? neckAccessorySlot.transform.GetChild(0).gameObject : null;
     }
 
     public void SetNextHeadAccessory()
     {
         SwitchHeadAccessory(true);
-        
-        /*
-         *SwitchAccessory(
-        ref currentHeadAccessory,
-        headAccessorySlot,
-        accessoriesData.HeadAccessories,
-        updatedAccessory => currentHeadAccessory = updatedAccessory,
-        isNext
-    );
-
-    OnHatAccessoryChange?.Invoke(getAccessoryType());
-         * 
-         */
-        
     }    
     
     public void SetPreviousHeadAccessory()
     {
         SwitchHeadAccessory(false);
+    }    
+    
+    public void SetNextNeckAccessory()
+    {
+        SwitchNeckAccessory(true);
+    }    
+    
+    public void SetPreviousNeckAccessory()
+    {
+        SwitchNeckAccessory(false);
     }
     
     public void SwitchHeadAccessory(bool isNext = true)
     {
-        if (accessoriesData.HeadAccessories == null || accessoriesData.HeadAccessories.Count == 0)
-        {
-            Debug.LogError("accessoriesData.HeadAccessories list is empty.");
-            return;
-        }
+        SwitchAccessory(
+            ref currentHeadAccessory,
+            headAccessorySlot,
+            accessoriesData.HeadAccessories,
+            updatedAccessory => currentHeadAccessory = updatedAccessory,
+            isNext
+        );
 
-        var threshold = (isNext) ?  accessoriesData.HeadAccessories.Count : -1;
-        var step = (isNext) ?  1 : -1;
-        var defaultAccessoryIndex = (accessoriesData.HeadAccessories.Count + threshold) % accessoriesData.HeadAccessories.Count;
-            
-        // Remove the current head accessory
-        if (currentHeadAccessory != null)
-        {
-            Destroy(currentHeadAccessory);
-            
-            // clones of prefab have "(Clone)" suffix in name
-            int currentIndex = accessoriesData.HeadAccessories.FindIndex(
-                accessory => currentHeadAccessory.name.StartsWith(accessory.name)
-            );
-            
-            if (currentIndex == -1)
-            {
-                Debug.LogError($"Accessory not found in list!");
-                return;
-            }
-            int nextIndex = currentIndex + step;
-            Debug.Log($"nextIndex = {nextIndex}");
-            if (nextIndex == threshold)
-            {
-                currentHeadAccessory = null;
-                Debug.Log($"Setting currentHeadAccessory to null");
-            }
-            else
-            {
-                currentHeadAccessory = Instantiate(accessoriesData.HeadAccessories[nextIndex], headAccessorySlot.transform);
-                Debug.Log($"Instantiate ${nextIndex}th accessory");
-            }
-            
-        }
-        else
-        {
-            currentHeadAccessory = Instantiate(accessoriesData.HeadAccessories[defaultAccessoryIndex], headAccessorySlot.transform);
-            Debug.Log($"Instantiate ${defaultAccessoryIndex}th accessory as default");
-        }
-
-        if (currentHeadAccessory != null)
-        {
-            currentHeadAccessory.transform.localPosition = Vector3.zero;
-            currentHeadAccessory.transform.localRotation = Quaternion.identity;
-        }
-        
         OnHatAccessoryChange?.Invoke(getAccessoryType());
     }
 
+    public void SwitchNeckAccessory(bool isNext = true)
+    {
+        SwitchAccessory(
+            ref currentNeckAccessory,
+            neckAccessorySlot,
+            accessoriesData.NeckAccessories,
+            updatedAccessory => currentNeckAccessory = updatedAccessory,
+            isNext
+        );
+        
+        OnNeckAccessoryChange?.Invoke(getAccessoryType());
+    }
+    
     private void SwitchAccessory(
         ref GameObject currentAccessory,
         GameObject accessorySlot,
@@ -137,14 +105,16 @@ public class WardrobeBehaviour : MonoBehaviour
         int step = isNext ? 1 : -1;
         int defaultAccessoryIndex = (accessories.Count + threshold) % accessories.Count;
 
+        var capturedCurrentAccessory = currentAccessory;
+        
         // Remove the current accessory
-        if (currentAccessory != null)
+        if (capturedCurrentAccessory != null)
         {
-            Destroy(currentAccessory);
+            Destroy(capturedCurrentAccessory);
 
             // Find the current accessory's index in the list
             int currentIndex = accessories.FindIndex(
-                accessory => currentAccessory.name.StartsWith(accessory.name)
+                accessory => capturedCurrentAccessory.name.StartsWith(accessory.name)
             );
 
             if (currentIndex == -1)

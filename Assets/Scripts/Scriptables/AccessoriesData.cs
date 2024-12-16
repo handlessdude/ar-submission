@@ -6,5 +6,5 @@ using UnityEngine;
 public class AccessoriesData : ScriptableObject
 {
     public List<GameObject> HeadAccessories;
-    public List<GameObject> FaceAccessories;
+    public List<GameObject> NeckAccessories;
 }

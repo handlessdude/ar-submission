@@ -122,30 +122,4 @@ public class WardrobeBehaviour : MonoBehaviour
         
         return accessoryIdentifier.AccessoryID;
     }
-    
-    public void SwitchFaceAccessory()
-    {
-        if (accessoriesData.FaceAccessories == null || accessoriesData.FaceAccessories.Count == 0)
-        {
-            Debug.LogError("accessoriesData.FaceAccessories list is empty.");
-            return;
-        }
-
-        // Remove the current face accessory
-        if (currentFaceAccessory != null)
-        {
-            Destroy(currentFaceAccessory);
-            int currentIndex = accessoriesData.FaceAccessories.IndexOf(currentFaceAccessory);
-            int nextIndex = (currentIndex + 1) % accessoriesData.FaceAccessories.Count;
-            currentFaceAccessory = Instantiate(accessoriesData.FaceAccessories[nextIndex], faceAccessorySlot.transform);
-        }
-        else
-        {
-            // No accessory currently attached, add the first one
-            currentFaceAccessory = Instantiate(accessoriesData.FaceAccessories[0], faceAccessorySlot.transform);
-        }
-
-        currentFaceAccessory.transform.localPosition = Vector3.zero;
-        currentFaceAccessory.transform.localRotation = Quaternion.identity;
-    }
 }

@@ -72,7 +72,7 @@ public class WardrobeBehaviour : MonoBehaviour
             isNext
         );
 
-        OnHatAccessoryChange?.Invoke(getAccessoryType());
+        OnHatAccessoryChange?.Invoke(getAccessoryType(ref currentHeadAccessory));
     }
 
     public void SwitchNeckAccessory(bool isNext = true)
@@ -85,7 +85,7 @@ public class WardrobeBehaviour : MonoBehaviour
             isNext
         );
         
-        OnNeckAccessoryChange?.Invoke(getAccessoryType());
+        OnNeckAccessoryChange?.Invoke(getAccessoryType(ref currentNeckAccessory));
     }
     
     private void SwitchAccessory(
@@ -149,14 +149,14 @@ public class WardrobeBehaviour : MonoBehaviour
         updateCurrentAccessory(currentAccessory);
     }
     
-    private string getAccessoryType()
+    private string getAccessoryType(ref GameObject currentAccessory)
     {
-        if (currentHeadAccessory == null)
+        if (currentAccessory == null)
         {
             return "None";
         }
 
-        var accessoryIdentifier = currentHeadAccessory.GetComponent<AccessoryIdentifier>();
+        var accessoryIdentifier = currentAccessory.GetComponent<AccessoryIdentifier>();
 
         if (accessoryIdentifier == null)
         {

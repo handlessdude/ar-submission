@@ -2469,7 +2469,7 @@ PrefabInstance:
     - target: {fileID: 4745245113668188512, guid: 08f87c0013035964e89984c2ae56bbfb,
         type: 3}
       propertyPath: m_Name
-      value: CollarCarousel
+      value: NeckAccessoryCarousel
       objectReference: {fileID: 0}
     - target: {fileID: 5441608392785746089, guid: 08f87c0013035964e89984c2ae56bbfb,
         type: 3}
@@ -3366,7 +3366,7 @@ PrefabInstance:
     - target: {fileID: 4745245113668188512, guid: 08f87c0013035964e89984c2ae56bbfb,
         type: 3}
       propertyPath: m_Name
-      value: HatCarousel
+      value: HeadAccessoryCarousel
       objectReference: {fileID: 0}
     - target: {fileID: 5441608392785746089, guid: 08f87c0013035964e89984c2ae56bbfb,
         type: 3}

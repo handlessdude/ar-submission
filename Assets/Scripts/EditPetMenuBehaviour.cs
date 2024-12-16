@@ -5,57 +5,99 @@ public class EditPetMenuBehaviour : MonoBehaviour
 {
     public WardrobeBehaviour wardrobe;
 
-    private GameObject hatCarousel;
-    private TextMeshProUGUI hatCarouselText;
+    private GameObject headAccessoryCarousel;
+    private TextMeshProUGUI headAccessoryCarouselText;   
+
+    private GameObject neckAccessoryCarousel;
+    private TextMeshProUGUI neckAccessoryCarouselText;
 
     private void OnEnable()
     {
-        hatCarousel = GameObject.Find("HatCarousel");
-
-        if (hatCarousel == null)
-        {
-            Debug.LogError("HatCarousel GameObject not found.");
-        }
-        else
-        {
-            // Locate TextMeshProUGUI within HatCarousel
-            hatCarouselText = hatCarousel.GetComponentInChildren<TextMeshProUGUI>();
-
-            if (hatCarouselText == null)
-            {
-                Debug.LogError("TextMeshProUGUI component not found in HatCarousel.");
-            }
-        }
-
-        // Attach event handler
+        InitializeHatCarousel();
+        InitializeNeckAccessoryCarousel();
+        
         if (wardrobe != null)
         {
-            wardrobe.OnHatAccessoryChange += HandleHatAccessoryChange;
+            wardrobe.OnHatAccessoryChange += HandleHeadAccessoryChange;
+            wardrobe.OnNeckAccessoryChange += HandleNeckAccessoryChange;
         }
         else
         {
             Debug.LogError("WardrobeBehaviour component not identified.");
         }
     }
-
+    
     private void OnDisable()
     {
         // Detach event handler to prevent memory leaks
         if (wardrobe != null)
         {
-            wardrobe.OnHatAccessoryChange -= HandleHatAccessoryChange;
+            wardrobe.OnHatAccessoryChange -= HandleHeadAccessoryChange;
+            wardrobe.OnNeckAccessoryChange -= HandleNeckAccessoryChange;
         }
     }
 
-    public void HandleHatAccessoryChange(string accessoryType)
+    private void InitializeHatCarousel() 
     {
-        if (hatCarouselText != null)
+         headAccessoryCarousel = GameObject.Find("HeadAccessoryCarousel");
+
+        if (headAccessoryCarousel == null)
         {
-            hatCarouselText.text = accessoryType;
+            Debug.LogError("headAccessoryCarousel GameObject not found.");
         }
         else
         {
-            Debug.LogError("Cannot update HatCarousel text: TextMeshProUGUI component not assigned.");
+            // Locate TextMeshProUGUI within headAccessoryCarousel
+            headAccessoryCarouselText = headAccessoryCarousel.GetComponentInChildren<TextMeshProUGUI>();
+
+            if (headAccessoryCarouselText == null)
+            {
+                Debug.LogError("TextMeshProUGUI component not found in headAccessoryCarousel.");
+            }
+        }
+    }
+    
+    private void InitializeNeckAccessoryCarousel() 
+    {
+        neckAccessoryCarousel = GameObject.Find("NeckAccessoryCarousel");
+
+        if (neckAccessoryCarousel == null)
+        {
+            Debug.LogError("NeckAccessoryCarousel GameObject not found.");
+        }
+        else
+        {
+            neckAccessoryCarouselText = neckAccessoryCarousel.GetComponentInChildren<TextMeshProUGUI>();
+
+            if (neckAccessoryCarouselText == null)
+            {
+                Debug.LogError("TextMeshProUGUI component not found in NeckAccessoryCarousel.");
+            }
+        }
+    }
+
+
+    public void HandleHeadAccessoryChange(string accessoryType)
+    {
+        if (headAccessoryCarouselText != null)
+        {
+            headAccessoryCarouselText.text = accessoryType;
+        }
+        else
+        {
+            Debug.LogError("Cannot update HeadAccessoryCarouselText text: TextMeshProUGUI component not assigned.");
+        }
+    }
+    
+    public void HandleNeckAccessoryChange(string accessoryType)
+    {
+        if (neckAccessoryCarouselText != null)
+        {
+            neckAccessoryCarouselText.text = accessoryType;
+        }
+        else
+        {
+            Debug.LogError("Cannot update NeckAccessoryCarousel text: TextMeshProUGUI component not assigned.");
         }
     }
 }

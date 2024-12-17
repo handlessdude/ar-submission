@@ -12,8 +12,8 @@ public class CarouselBehaviour : MonoBehaviour
 
     private void Awake()
     {
-        BackButton = transform.Find("BackButton")?.GetComponent<Button>();
-        NextButton = transform.Find("NextButton")?.GetComponent<Button>();
+        BackButton = ComponentFinder.FindChildWithTag(gameObject, "BackButton").GetComponent<Button>();
+        NextButton = ComponentFinder.FindChildWithTag(gameObject, "NextButton").GetComponent<Button>();
 
         if (BackButton == null)
         {

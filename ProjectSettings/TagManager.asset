@@ -16,6 +16,9 @@ TagManager:
   - PetHouse
   - NeckAccessorySlot
   - ModelValue
+  - Ball
+  - BackButton
+  - NextButton
   layers:
   - Default
   - TransparentFX

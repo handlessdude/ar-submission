@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using System.Linq;
 
 public class EditPetMenuBehaviour : MonoBehaviour
 {
@@ -47,8 +48,9 @@ public class EditPetMenuBehaviour : MonoBehaviour
         }
         else
         {
-            // Locate TextMeshProUGUI within headAccessoryCarousel
-            headAccessoryCarouselText = headAccessoryCarousel.GetComponentInChildren<TextMeshProUGUI>();
+            headAccessoryCarouselText = headAccessoryCarousel
+                .GetComponentsInChildren<TextMeshProUGUI>()
+                .FirstOrDefault(tmp => tmp.CompareTag("ModelValue"));
 
             if (headAccessoryCarouselText == null)
             {
@@ -67,7 +69,9 @@ public class EditPetMenuBehaviour : MonoBehaviour
         }
         else
         {
-            neckAccessoryCarouselText = neckAccessoryCarousel.GetComponentInChildren<TextMeshProUGUI>();
+            neckAccessoryCarouselText = headAccessoryCarousel
+                .GetComponentsInChildren<TextMeshProUGUI>()
+                .FirstOrDefault(tmp => tmp.CompareTag("ModelValue"));
 
             if (neckAccessoryCarouselText == null)
             {

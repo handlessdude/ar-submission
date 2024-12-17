@@ -8,7 +8,6 @@ TagManager:
   - DebugConsole
   - StateLabel
   - HeadAccessorySlot
-  - FaceAccessorySlot
   - Pet
   - MouthSlot
   - HeadAccessory_Hat
@@ -16,6 +15,7 @@ TagManager:
   - HeadAccessory_Horns
   - PetHouse
   - NeckAccessorySlot
+  - ModelValue
   layers:
   - Default
   - TransparentFX

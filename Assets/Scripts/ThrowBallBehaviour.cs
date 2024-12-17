@@ -4,20 +4,20 @@ using UnityEngine.UI;
 
 public class ThrowBallManager : MonoBehaviour
 {
-    public Camera arCamera; // Assign your AR Camera here
-    public GameObject ballPrefab; // Prefab of the ball to throw
-    public LineRenderer aimGizmo; // A LineRenderer for the aiming arrow
-    public Button throwModeButton; // UI button to activate throw mode
-    public float throwForce = 1f;
+    public Camera arCamera;
+    public GameObject ballPrefab;
+    public GameObject arrowPrefab;
+    public Button throwModeButton;
+    public float throwForce = 0.5f;
 
+    private GameObject currentArrow;
     private Vector3 targetPoint;
     private bool isThrowModeActive = false;
     private bool isTouching = false;
-
+    
     private void Start()
     {
         throwModeButton.onClick.AddListener(ActivateThrowMode);
-        aimGizmo.enabled = false;
     }
 
     private void Update()
@@ -49,7 +49,7 @@ public class ThrowBallManager : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 targetPoint = hit.point;
-                DrawAimGizmo(targetPoint);
+                UpdateArrow(targetPoint);
             }
         }
         else if (isTouching) // When touch or click is released
@@ -57,25 +57,47 @@ public class ThrowBallManager : MonoBehaviour
             isTouching = false;
             ThrowBall(targetPoint);
             DeactivateThrowMode();
+            if (currentArrow != null)
+            {
+                currentArrow.SetActive(false);
+            }
         }
     }
     
     private void ActivateThrowMode()
     {
         isThrowModeActive = true;
-        aimGizmo.enabled = true;
     }
 
     private void DeactivateThrowMode()
     {
         isThrowModeActive = false;
-        aimGizmo.enabled = false;
     }
 
-    private void DrawAimGizmo(Vector3 target)
+    private void UpdateArrow(Vector3 target)
     {
-        aimGizmo.SetPosition(0, arCamera.transform.position);
-        aimGizmo.SetPosition(1, target);
+        Vector3 startPoint = arCamera.transform.position;
+        Vector3 direction = (target - startPoint).normalized;
+        float distance = Vector3.Distance(startPoint, target);
+
+        var arrowPosition = startPoint + direction * (distance * 0.5f) - Vector3.up * 0.5f;
+
+        if (currentArrow != null)
+        {
+            if (!currentArrow.activeSelf)
+            {
+                currentArrow.SetActive(true);
+            }
+            // Position the arrow midpoint between the camera and target
+            currentArrow.transform.position = arrowPosition;
+        }
+        if (currentArrow == null)
+        {
+            currentArrow = Instantiate(arrowPrefab, arrowPosition, Quaternion.identity);
+        }
+        
+        // Rotate the arrow to point toward the target
+        currentArrow.transform.rotation = Quaternion.LookRotation(direction);
     }
 
     private void ThrowBall(Vector3 target)
@@ -86,7 +108,6 @@ public class ThrowBallManager : MonoBehaviour
         if (rb != null)
         {
             Vector3 throwDirection = (target - arCamera.transform.position).normalized;
-            Debug.Log(throwDirection.ToString());
             rb.AddForce(throwDirection * throwForce);
         }
     }

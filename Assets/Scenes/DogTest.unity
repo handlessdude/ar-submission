@@ -5060,8 +5060,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.2566118, y: 0.5527438, z: 0.66872936}
-  m_Center: {x: 0.00048927683, y: 0.26796812, z: 0.051902294}
+  m_Size: {x: 0.2566118, y: 0.5527438, z: 0.48939037}
+  m_Center: {x: 0.00048928085, y: 0.26796812, z: -0.037767522}
 --- !u!195 &1974122224
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -5076,7 +5076,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 500
-  m_StoppingDistance: 1
+  m_StoppingDistance: 0.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

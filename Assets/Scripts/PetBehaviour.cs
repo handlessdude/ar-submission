@@ -15,8 +15,11 @@ public class PetBehavior : MonoBehaviour
 
     private GameObject arrowInstance;
     private int ANIMATION_ID_BREATHING = 0;
+    private int ANIMATION_ID_WIGGLING_TAIL = 1;
     private int ANIMATION_ID_RUN = 4;
-
+    private int ANIMATION_ID_EAT = 5;
+    private string FOOD_TAG = "Food";
+    
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -50,7 +53,7 @@ public class PetBehavior : MonoBehaviour
         // Check if pet has reached its destination
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance && !isUserDragging)
         {
-            animator.SetInteger("AnimationID", ANIMATION_ID_BREATHING);
+            HandleArrivalAtTarget();
         }
 
         // Update arrow direction while dragging
@@ -113,7 +116,44 @@ public class PetBehavior : MonoBehaviour
             arrowInstance.transform.position = transform.position;
             Vector3 direction = targetPosition - transform.position;
             direction.y = 0; // Keep the arrow horizontal
+
+            float distance = direction.magnitude;
+            arrowInstance.transform.localScale = new Vector3(arrowInstance.transform.localScale.x, arrowInstance.transform.localScale.y, distance);
             arrowInstance.transform.rotation = Quaternion.LookRotation(direction);
         }
+    }
+
+    void HandleArrivalAtTarget()
+    {
+        animator.SetInteger("AnimationID", ANIMATION_ID_BREATHING);
+
+        Collider[] colliders = Physics.OverlapSphere(transform.position, agent.stoppingDistance);
+        foreach (var collider in colliders)
+        {
+            if (collider.CompareTag(FOOD_TAG))
+            {
+                FaceBone(collider.transform); // Make the pet look at the bone
+                StartCoroutine(HandleEatingAnimation(collider.gameObject));
+                break;
+            }
+        }
+    }
+
+    void FaceBone(Transform boneTransform)
+    {
+        Vector3 directionToBone = (boneTransform.position - transform.position).normalized;
+        directionToBone.y = 0; // Ignore vertical differences
+        transform.rotation = Quaternion.LookRotation(directionToBone);
+    }
+    
+    IEnumerator HandleEatingAnimation(GameObject bone)
+    {
+        animator.SetInteger("AnimationID", ANIMATION_ID_EAT);
+        yield return new WaitForSeconds(1.25f);
+        if (bone != null)
+        {
+            Destroy(bone); // sorry
+        }
+        animator.SetInteger("AnimationID", ANIMATION_ID_BREATHING);
     }
 }

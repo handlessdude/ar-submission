@@ -79,7 +79,8 @@ public class ThrowBehaviour : MonoBehaviour
         Vector3 direction = (target - startPoint).normalized;
         float distance = Vector3.Distance(startPoint, target);
 
-        var arrowPosition = startPoint + direction * (distance * 0.5f) - Vector3.up * 0.5f;
+        // var arrowPosition = startPoint + direction * (distance * 0.25f) - Vector3.up * 0.5f;
+        var arrowPosition = target;
 
         if (currentArrow != null)
         {
@@ -96,7 +97,7 @@ public class ThrowBehaviour : MonoBehaviour
         }
 
         // Rotate the arrow to point toward the target
-        currentArrow.transform.rotation = Quaternion.LookRotation(direction);
+        currentArrow.transform.rotation = Quaternion.LookRotation(direction - Vector3.up * 0.5f);
     }
 
     // Method to set the current throwable based on the index

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6736555428017847793}
   - component: {fileID: 8213564780173336921}
   - component: {fileID: 3585828442304713044}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Food2P2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 8121003244615526654}
   - component: {fileID: 5349194148583249188}
   - component: {fileID: 2568525492134045263}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Food2P1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 9083138100357347827}
   - component: {fileID: -8991224771653322493}
   - component: {fileID: 848152682322969017}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FoodCan_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

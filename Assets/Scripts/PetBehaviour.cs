@@ -1,20 +1,28 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 
 public class PetBehavior : MonoBehaviour
 {
-    public string ballTag = "Ball";
-    public string petHouseTag = "PetHouse";
     private NavMeshAgent agent;
-    private Transform ball;
     private Vector3 originalPosition;
-    
+    private bool isUserDragging = false;
+    private Vector3 targetPosition;
+
+    public Animator animator;
+    public GameObject arrowPrefab;
+
+    private GameObject arrowInstance;
+    private int ANIMATION_ID_BREATHING = 0;
+    private int ANIMATION_ID_RUN = 4;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
         originalPosition = transform.position;
-        
+
         // Ensure the NavMeshAgent is placed on a NavMesh
         if (!agent.isOnNavMesh)
         {
@@ -28,36 +36,84 @@ public class PetBehavior : MonoBehaviour
         // Ensure agent is on NavMesh before calling NavMesh methods
         if (!agent.isOnNavMesh)
             return;
-        
-        // Check for the ball's presence in the scene
-        GameObject foundBall = GameObject.FindWithTag(ballTag);
-        if (foundBall != null)
+
+        // Check for user input
+        HandleUserInput();
+
+        // Move the pet to the target position if dragging has stopped
+        if (!isUserDragging && targetPosition != Vector3.zero)
         {
-            ball = foundBall.transform;
-            agent.SetDestination(ball.position);
+            agent.SetDestination(targetPosition);
+            animator.SetInteger("AnimationID", ANIMATION_ID_RUN);
         }
-        else if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+
+        // Check if pet has reached its destination
+        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance && !isUserDragging)
         {
-            // If no ball or ball reached, return to pet house
-            GameObject petHouse = GameObject.FindWithTag(petHouseTag);
-            if (petHouse != null)
+            animator.SetInteger("AnimationID", ANIMATION_ID_BREATHING);
+        }
+
+        // Update arrow direction while dragging
+        if (isUserDragging && arrowInstance != null)
+        {
+            UpdateArrowDirection();
+        }
+    }
+
+    void HandleUserInput()
+    {
+        if (Mouse.current.leftButton.wasPressedThisFrame || Touchscreen.current?.primaryTouch.press.isPressed == true)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                agent.SetDestination(petHouse.transform.position);
+                // Check if the pet was tapped
+                if (hit.collider.gameObject == gameObject)
+                {
+                    isUserDragging = true;
+
+                    // Show arrow if not already shown
+                    if (arrowInstance == null)
+                    {
+                        arrowInstance = Instantiate(arrowPrefab, transform.position, Quaternion.identity);
+                    }
+                    arrowInstance.SetActive(true);
+                }
             }
-            else
+        }
+
+        if ((Mouse.current.leftButton.isPressed || Touchscreen.current?.primaryTouch.press.isPressed == true) && isUserDragging)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                // Fall back to original position if PetHouse is missing
-                agent.SetDestination(originalPosition);
+                targetPosition = hit.point; // Update the target position
+            }
+        }
+
+        if (Mouse.current.leftButton.wasReleasedThisFrame || Touchscreen.current?.primaryTouch.press.isPressed == false)
+        {
+            if (isUserDragging)
+            {
+                isUserDragging = false;
+
+                // Hide arrow once dragging stops
+                if (arrowInstance != null)
+                {
+                    arrowInstance.SetActive(false);
+                }
             }
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void UpdateArrowDirection()
     {
-        // Handle ball reached event
-        if (other.CompareTag(ballTag))
+        if (arrowInstance != null)
         {
-            Destroy(other.gameObject); // Simulate "consuming" the ball
+            arrowInstance.transform.position = transform.position;
+            Vector3 direction = targetPosition - transform.position;
+            direction.y = 0; // Keep the arrow horizontal
+            arrowInstance.transform.rotation = Quaternion.LookRotation(direction);
         }
     }
 }

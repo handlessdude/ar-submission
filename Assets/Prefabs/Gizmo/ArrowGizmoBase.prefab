@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6798743244418812434}
   m_Layer: 0
-  m_Name: ArrowGizmo
+  m_Name: ArrowGizmoBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,7 +58,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 322a9de4204932143b2307c18ba360d3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.00012
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 322a9de4204932143b2307c18ba360d3,
         type: 3}
@@ -68,7 +68,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 322a9de4204932143b2307c18ba360d3,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.373
+      value: 0.63
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 322a9de4204932143b2307c18ba360d3,
         type: 3}

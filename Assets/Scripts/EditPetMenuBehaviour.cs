@@ -69,7 +69,7 @@ public class EditPetMenuBehaviour : MonoBehaviour
         }
         else
         {
-            neckAccessoryCarouselText = headAccessoryCarousel
+            neckAccessoryCarouselText = neckAccessoryCarousel
                 .GetComponentsInChildren<TextMeshProUGUI>()
                 .FirstOrDefault(tmp => tmp.CompareTag("ModelValue"));
 

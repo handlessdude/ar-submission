@@ -9,7 +9,8 @@ public class PetBehavior : MonoBehaviour
     private Vector3 originalPosition;
     private bool isUserDragging = false;
     private Vector3 targetPosition;
-
+    private bool isPerformingAction = false;
+    
     public Animator animator;
     public GameObject arrowPrefab;
 
@@ -71,7 +72,7 @@ public class PetBehavior : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 // Check if the pet was tapped
-                if (hit.collider.gameObject == gameObject)
+                if (hit.collider.gameObject == gameObject && !isPerformingAction)
                 {
                     isUserDragging = true;
 
@@ -148,6 +149,7 @@ public class PetBehavior : MonoBehaviour
     
     IEnumerator HandleEatingAnimation(GameObject bone)
     {
+        isPerformingAction = true;
         animator.SetInteger("AnimationID", ANIMATION_ID_EAT);
         yield return new WaitForSeconds(1.25f);
         if (bone != null)
@@ -155,5 +157,15 @@ public class PetBehavior : MonoBehaviour
             Destroy(bone); // sorry
         }
         animator.SetInteger("AnimationID", ANIMATION_ID_BREATHING);
+        isPerformingAction = false;
+    }
+    
+    IEnumerator HandleWigglingTailAnimation()
+    {
+        isPerformingAction = true;
+        animator.SetInteger("AnimationID", ANIMATION_ID_WIGGLING_TAIL);
+        yield return new WaitForSeconds(1f);
+        animator.SetInteger("AnimationID", ANIMATION_ID_BREATHING);
+        isPerformingAction = false;
     }
 }

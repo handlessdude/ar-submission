@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: vaskhon
-  productName: image-tracking
+  productName: submission
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -166,8 +166,8 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.vaskhon.image_tracking
-    Standalone: com.unity.template.ar-mobile
+    Android: com.vaskhon.submission
+    Standalone: com.unity.template.submission
     iPhone: com.unity.template.armobile
   buildNumber:
     Bratwurst: 0
@@ -297,7 +297,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: d41ee5a11717416418f52e183dae2fbe, type: 3}
+      m_Icon: {fileID: 2800000, guid: f5d724525c398de4e98f10c555a6b878, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0

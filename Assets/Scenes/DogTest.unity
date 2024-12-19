@@ -2798,6 +2798,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 7651948785074552500, guid: 3568ea2e97a164d43a0c334ab62e8694,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.012
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651948785074552500, guid: 3568ea2e97a164d43a0c334ab62e8694,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.017
+      objectReference: {fileID: 0}
     - target: {fileID: 7662162535054351879, guid: 3568ea2e97a164d43a0c334ab62e8694,
         type: 3}
       propertyPath: m_Layer
@@ -5099,6 +5109,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   arrowPrefab: {fileID: 3037296349370795917, guid: 0ed100f03af76804b918522ba6b9520e,
     type: 3}
+  mouthSlot: {fileID: 0}
 --- !u!1001 &2527653429742383709
 PrefabInstance:
   m_ObjectHideFlags: 0

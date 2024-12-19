@@ -14,6 +14,7 @@ public class PetBehavior : MonoBehaviour
     public Animator animator;
     public GameObject arrowPrefab;
 
+    public Transform mouthSlot;
     private GameObject arrowInstance;
     private int ANIMATION_ID_BREATHING = 0;
     private int ANIMATION_ID_WIGGLING_TAIL = 1;
@@ -26,7 +27,8 @@ public class PetBehavior : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         originalPosition = transform.position;
-
+        mouthSlot = ComponentFinder.FindChildWithTag(gameObject, "MouthSlot").transform;
+        
         // Ensure the NavMeshAgent is placed on a NavMesh
         if (!agent.isOnNavMesh)
         {

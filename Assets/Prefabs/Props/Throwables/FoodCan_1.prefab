@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 848152682322969017}
   m_Layer: 3
   m_Name: FoodCan_1
-  m_TagString: Untagged
+  m_TagString: Throwable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

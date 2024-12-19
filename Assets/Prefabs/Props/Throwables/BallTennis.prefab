@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4951927122000870535}
   m_Layer: 3
   m_Name: BallTennis
-  m_TagString: Ball
+  m_TagString: ThrowableNonFood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

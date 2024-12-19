@@ -20,6 +20,12 @@ TagManager:
   - BackButton
   - NextButton
   - Food
+  - Throwable
+  - ThrowableNonFood
+  - ThrowableFood
+  - Actions
+  - Wardrobe
+  - TabSwitcher
   layers:
   - Default
   - TransparentFX

@@ -2,9 +2,8 @@
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
-using System;
 
-public class PetBehavior : MonoBehaviour
+public class test : MonoBehaviour
 {
     private NavMeshAgent agent;
     private Vector3 originalPosition;
@@ -14,24 +13,23 @@ public class PetBehavior : MonoBehaviour
     
     public Animator animator;
     public GameObject arrowPrefab;
+    public Transform mouthSlot; // Reference to the "MouthSlot" Transform
 
-    public Transform mouthSlot;
     private GameObject arrowInstance;
+    private GameObject currentObjectInMouth; // Store the object in the pet's mouth
     private int ANIMATION_ID_BREATHING = 0;
-    private int ANIMATION_ID_WIGGLING_TAIL = 1;
     private int ANIMATION_ID_RUN = 4;
     private int ANIMATION_ID_EAT = 5;
-    private string THROWABLE_FOOD_TAG = "ThrowableFood";
-    private string THROWABLE_NON_FOOD_TAG = "ThrowableNonFood";
-    private string THROWABLE_NON_FOOD_TAG = "ThrowableNonFood";
-    
+    private string FOOD_TAG = "Food";
+    private string BALL_TAG = "Ball";
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         originalPosition = transform.position;
         mouthSlot = ComponentFinder.FindChildWithTag(gameObject, "MouthSlot").transform;
-        
+            
         // Ensure the NavMeshAgent is placed on a NavMesh
         if (!agent.isOnNavMesh)
         {
@@ -57,7 +55,12 @@ public class PetBehavior : MonoBehaviour
         }
 
         // Check if pet has reached its destination
-        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance && !isUserDragging)
+        if (
+            !agent.pathPending
+            && agent.remainingDistance <= agent.stoppingDistance
+            && !isUserDragging
+            && !isPerformingAction
+            )
         {
             HandleArrivalAtTarget();
         }
@@ -134,41 +137,108 @@ public class PetBehavior : MonoBehaviour
         animator.SetInteger("AnimationID", ANIMATION_ID_BREATHING);
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, agent.stoppingDistance);
+       
         foreach (var collider in colliders)
         {
-            if (collider.CompareTag(THROWABLE_FOOD_TAG) || collider.CompareTag(THROWABLE_NON_FOOD_TAG))
+            if (collider.CompareTag(FOOD_TAG))
             {
-                FaceBone(collider.transform); // Make the pet look at the bone
-                var throwable = collider.gameObject;
-                StartCoroutine(HandleEatingAnimation(throwable));
+                FaceThrowable(collider.transform);
+                StartCoroutine(HandleEating(collider.gameObject));
+                break;
+            }
+
+            if (collider.CompareTag(BALL_TAG))
+            {
+                FaceThrowable(collider.transform);
+                StartCoroutine(HandleEating(collider.gameObject));
                 break;
             }
         }
     }
 
-    void FaceBone(Transform boneTransform)
+    void FaceThrowable(Transform boneTransform)
     {
         Vector3 directionToBone = (boneTransform.position - transform.position).normalized;
         directionToBone.y = 0; // Ignore vertical differences
         transform.rotation = Quaternion.LookRotation(directionToBone);
     }
-    
-    IEnumerator HandleEatingAnimation(GameObject throwable)
+
+    void PlaceInMouth(GameObject objectToEat)
     {
-        isPerformingAction = true;
-        animator.SetInteger("AnimationID", ANIMATION_ID_EAT);
-        yield return new WaitForSeconds(1.25f);
-        animator.SetInteger("AnimationID", ANIMATION_ID_BREATHING);
-        Destroy(throwable);
-        isPerformingAction = false;
+        if (objectToEat != null)
+        {
+            Debug.Log("PlaceInMouth");
+             currentObjectInMouth = objectToEat;
+             currentObjectInMouth.transform.SetParent(mouthSlot);
+             currentObjectInMouth.transform.localPosition = Vector3.zero; // Place at MouthSlot's local origin
+     
+             Vector3 mouthSlotForward = mouthSlot.forward;
+             Vector3 mouthSlotUp = mouthSlot.up;
+     
+             // Make the ball's local forward axis match the MouthSlot's forward axis
+             currentObjectInMouth.transform.rotation = Quaternion.LookRotation(mouthSlotForward, mouthSlotUp);
+             
+             // Disable the collider and Rigidbody of the ball while it's in the mouth
+             Collider ballCollider = currentObjectInMouth.GetComponent<Collider>();
+             if (ballCollider != null)
+             {
+                 ballCollider.enabled = false;
+             }
+             Rigidbody ballRb = currentObjectInMouth.GetComponent<Rigidbody>();
+             if (ballRb != null)
+             {
+                 Destroy(ballRb);
+             }
+        }
     }
     
-    IEnumerator HandleWigglingTailAnimation()
+    IEnumerator HandleEating(GameObject throwable)
     {
-        isPerformingAction = true;
-        animator.SetInteger("AnimationID", ANIMATION_ID_WIGGLING_TAIL);
-        yield return new WaitForSeconds(1f);
-        animator.SetInteger("AnimationID", ANIMATION_ID_BREATHING);
-        isPerformingAction = false;
+        if (throwable != null)
+        {
+            isPerformingAction = true;
+            animator.SetInteger("AnimationID", ANIMATION_ID_EAT);
+            yield return new WaitForSeconds(0.5f);
+            animator.SetInteger("AnimationID", ANIMATION_ID_BREATHING);
+            
+            float probability = Random.Range(0f, 1f);
+    
+            if (currentObjectInMouth != null)
+            {
+                DropCurrentObject();
+            }
+            
+            // Perform an action if the probability is less than or equal to 0.5 (50% chance)
+            if (probability <= 0.5f)
+            {
+                Debug.Log("destroy");
+                Destroy(throwable);
+            }
+            else
+            {
+                PlaceInMouth(throwable);
+            }
+            
+            isPerformingAction = false;
+        }
+    }
+
+    void DropCurrentObject()
+    {
+        if (currentObjectInMouth != null)
+        {
+            Collider ballCollider = currentObjectInMouth.GetComponent<Collider>();
+            if (ballCollider != null)
+            {
+                ballCollider.enabled = true;
+            }
+            
+            currentObjectInMouth.AddComponent<Rigidbody>();
+            Rigidbody rb = currentObjectInMouth.GetComponent<Rigidbody>();
+            rb.isKinematic = false;
+                
+            currentObjectInMouth.transform.SetParent(null);
+            currentObjectInMouth = null;
+        }
     }
 }

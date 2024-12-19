@@ -23,7 +23,6 @@ public class PetBehavior : MonoBehaviour
     private int ANIMATION_ID_EAT = 5;
     private string THROWABLE_FOOD_TAG = "ThrowableFood";
     private string THROWABLE_NON_FOOD_TAG = "ThrowableNonFood";
-    private string THROWABLE_NON_FOOD_TAG = "ThrowableNonFood";
     
     void Start()
     {

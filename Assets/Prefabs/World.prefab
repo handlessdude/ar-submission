@@ -50,6 +50,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ThrowBehaviour
       objectReference: {fileID: 0}
+    - target: {fileID: 1620893057919183120, guid: 07049668044d0874cafbdc0c11ae5444,
+        type: 3}
+      propertyPath: m_TagString
+      value: ThrowBehaviour
+      objectReference: {fileID: 0}
     - target: {fileID: 4187712096686880379, guid: 07049668044d0874cafbdc0c11ae5444,
         type: 3}
       propertyPath: m_LocalPosition.x

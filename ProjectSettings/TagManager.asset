@@ -27,6 +27,7 @@ TagManager:
   - Wardrobe
   - TabSwitcher
   - SurfaceManager
+  - ThrowBehaviour
   layers:
   - Default
   - TransparentFX

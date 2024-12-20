@@ -16,6 +16,11 @@ public class ThrowBehaviour : MonoBehaviour
     private bool isThrowModeActive = false;
     private bool isTouching = false;
 
+    public bool IsTouching
+    {
+        get => isTouching;
+    }
+    
     public Action<GameObject> onThrowableThrown; // Action that will be invoked when the throwable is thrown
 
     private void Start()

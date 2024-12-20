@@ -12,6 +12,7 @@ using UnityEngine.XR.ARSubsystems;
 using Unity.Collections;
 public class PetBehavior : MonoBehaviour
 {
+    public ThrowBehaviour ThrowBehaviour;
     public SurfaceManager SurfaceManager;
     private NavMeshAgent agent;
     private Vector3 originalPosition;
@@ -38,7 +39,7 @@ public class PetBehavior : MonoBehaviour
         originalPosition = transform.position;
         mouthSlot = ComponentFinder.FindChildWithTag(gameObject, "MouthSlot").transform;
         
-        // todo: добавить throw manager 
+        // SurfaceManager
         GameObject surfaceManagerObject = GameObject.FindWithTag("SurfaceManager");
         if (surfaceManagerObject != null)
         {
@@ -51,6 +52,20 @@ public class PetBehavior : MonoBehaviour
             Debug.LogError("SurfaceManager not found in the scene. Ensure it has the correct tag.");
             enabled = false;
         }
+        
+        // ThrowBehaviour
+        GameObject throwBehaviourObject = GameObject.FindWithTag("ThrowBehaviour");
+        if (throwBehaviourObject != null)
+        {
+            ThrowBehaviour = throwBehaviourObject.GetComponent<ThrowBehaviour>();
+        }
+        else
+        {
+            MyLogger.Log("ThrowBehaviour not found in the scene. Ensure it has the correct tag.");
+            Debug.LogError("ThrowBehaviour not found in the scene. Ensure it has the correct tag.");
+            enabled = false;
+        }
+        
         // Ensure the NavMeshAgent is placed on a NavMesh
         if (!agent.isOnNavMesh)
         {
@@ -63,8 +78,16 @@ public class PetBehavior : MonoBehaviour
     {
         // Ensure agent is on NavMesh before calling NavMesh methods
         if (!agent.isOnNavMesh)
+        {
             return;
+        }
 
+        // if it's throwing mode, do not drag the pet
+        if (ThrowBehaviour.IsTouching)
+        {
+            return;
+        }
+        
         // Check for user input
         HandleUserInput();
 
@@ -139,13 +162,6 @@ public class PetBehavior : MonoBehaviour
             && isUserDragging
             )
         {
-            /*
-            Ray ray = getScreenPointToRay();
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                targetPosition = hit.point; // Update the target position
-            }
-            */
             if (SurfaceManager.LockedPlane == null)
             {
                 MyLogger.Log("SurfaceManager.LockedPlane is null!");

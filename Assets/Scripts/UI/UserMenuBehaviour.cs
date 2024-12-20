@@ -27,6 +27,16 @@ public class UserMenuBehaviour : MonoBehaviour
         ActionsTab = ComponentFinder.FindChildWithTag(gameObject, "Actions");
         WardrobeTab = ComponentFinder.FindChildWithTag(gameObject, "Wardrobe");
         
+        
+         if (WardrobeTab == null)
+         {
+             Debug.LogError("WardrobeTab not found as a child of Carousel.");
+             MyLogger.Log("WardrobeTab not found as a child of Carousel.");
+         }
+         else
+         {
+             tabs = tabs.Append(WardrobeTab).ToArray();
+         }
         if (ActionsTab == null)
         {
             Debug.LogError("ActionsTab not found as a child of Carousel.");
@@ -36,16 +46,7 @@ public class UserMenuBehaviour : MonoBehaviour
         {
             tabs = tabs.Append(ActionsTab).ToArray();
         }
-        if (WardrobeTab == null)
-        {
-            Debug.LogError("WardrobeTab not found as a child of Carousel.");
-			MyLogger.Log("WardrobeTab not found as a child of Carousel.");
-        }
-        else
-        {
-            tabs = tabs.Append(WardrobeTab).ToArray();
-        }
-        Debug.Log(tabs.Length);
+        
         if (BackButton == null)
         {
             Debug.LogError("BackButton not found as a child of Carousel.");

@@ -207,6 +207,9 @@ public class WardrobeBehaviour : MonoBehaviour
         SetAccessoryFromIndex(saveData.HeadAccessoryIndex, accessoriesData.HeadAccessories, headAccessorySlot, ref currentHeadAccessory);
         SetAccessoryFromIndex(saveData.NeckAccessoryIndex, accessoriesData.NeckAccessories, neckAccessorySlot, ref currentNeckAccessory);
 
+        OnHatAccessoryChange?.Invoke(getAccessoryType(ref currentHeadAccessory));
+        OnNeckAccessoryChange?.Invoke(getAccessoryType(ref currentNeckAccessory));
+        
         Debug.Log("Accessory data loaded.");
     }
 
@@ -219,6 +222,10 @@ public class WardrobeBehaviour : MonoBehaviour
         currentNeckAccessory = null;
 
         SaveAccessoryData();
+        
+        OnHatAccessoryChange?.Invoke(getAccessoryType(ref currentHeadAccessory));
+        OnNeckAccessoryChange?.Invoke(getAccessoryType(ref currentNeckAccessory));
+        
         Debug.Log("Accessories reset.");
     }
 

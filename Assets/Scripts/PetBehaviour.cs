@@ -68,11 +68,29 @@ public class PetBehavior : MonoBehaviour
         }
     }
 
+    private Ray getScreenPointToRay()
+    {
+        Vector2 inputPosition;
+        if (Touchscreen.current?.primaryTouch.press.isPressed == true)
+        {
+            inputPosition = Touchscreen.current.primaryTouch.position.ReadValue();
+        }
+        else if (Mouse.current?.leftButton.isPressed == true)
+        {
+            inputPosition = Mouse.current.position.ReadValue();
+        }
+        else
+        {
+            return new Ray();
+        }
+        return Camera.main.ScreenPointToRay(inputPosition);
+    }
+    
     void HandleUserInput()
     {
-        if (Mouse.current.leftButton.wasPressedThisFrame || Touchscreen.current?.primaryTouch.press.isPressed == true)
+        if (Mouse.current?.leftButton.wasPressedThisFrame == true || Touchscreen.current?.primaryTouch.press.isPressed == true)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            Ray ray = getScreenPointToRay();
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 // Check if the pet was tapped
@@ -90,16 +108,16 @@ public class PetBehavior : MonoBehaviour
             }
         }
 
-        if ((Mouse.current.leftButton.isPressed || Touchscreen.current?.primaryTouch.press.isPressed == true) && isUserDragging)
+        if ((Mouse.current?.leftButton.isPressed == true || Touchscreen.current?.primaryTouch.press.isPressed == true) && isUserDragging)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            Ray ray = getScreenPointToRay();
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 targetPosition = hit.point; // Update the target position
             }
         }
 
-        if (Mouse.current.leftButton.wasReleasedThisFrame || Touchscreen.current?.primaryTouch.press.isPressed == false)
+        if (Mouse.current?.leftButton.wasReleasedThisFrame == true || Touchscreen.current?.primaryTouch.press.isPressed == false)
         {
             if (isUserDragging)
             {

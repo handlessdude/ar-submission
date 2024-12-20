@@ -12,14 +12,13 @@ public class WardrobeBehaviour : MonoBehaviour
     private GameObject neckAccessorySlot;
     private GameObject currentHeadAccessory;
     private GameObject currentNeckAccessory;
-
-    private const string AccessorySaveFileName = "AccessorySaveData.json";
     
     public event Action<string> OnHatAccessoryChange;
     
     public event Action<string> OnNeckAccessoryChange;
     
-    // New Methods
+    private AccessoryDataHandler dataHandler;
+    
     [Serializable]
     private class AccessorySaveData
     {
@@ -29,6 +28,17 @@ public class WardrobeBehaviour : MonoBehaviour
     
     private void Start()
     {
+        var dataHandlerObject = GameObject.FindGameObjectWithTag("AccessoryDataHandler");
+        if (dataHandlerObject != null)
+        {
+            dataHandler = dataHandlerObject.GetComponent<AccessoryDataHandler>();
+        }
+        else
+        {
+            MyLogger.Log("AccessoryDataHandler not found");
+        }
+
+            
         // Find the pet game object by tag
         pet = GameObject.FindGameObjectWithTag("Pet");
 
@@ -47,15 +57,6 @@ public class WardrobeBehaviour : MonoBehaviour
             Debug.LogError("Accessory slots not found on pet.");
             return;
         }
-
-        /*// Retrieve current head and face accessories (if any)
-        currentHeadAccessory = headAccessorySlot.transform.childCount > 0
-            ? headAccessorySlot.transform.GetChild(0).gameObject
-            : null;
-        
-        currentNeckAccessory = neckAccessorySlot.transform.childCount > 0
-            ? neckAccessorySlot.transform.GetChild(0).gameObject
-            : null;*/
         
         LoadAccessoryData();
     }
@@ -178,31 +179,12 @@ public class WardrobeBehaviour : MonoBehaviour
         int headIndex = GetAccessoryIndex(accessoriesData.HeadAccessories, currentHeadAccessory);
         int neckIndex = GetAccessoryIndex(accessoriesData.NeckAccessories, currentNeckAccessory);
 
-        AccessorySaveData saveData = new AccessorySaveData
-        {
-            HeadAccessoryIndex = headIndex,
-            NeckAccessoryIndex = neckIndex
-        };
-
-        string json = JsonUtility.ToJson(saveData);
-        string path = Path.Combine(Application.persistentDataPath, AccessorySaveFileName);
-        File.WriteAllText(path, json);
-
-        Debug.Log($"Accessory data saved: {json}");
+        dataHandler.SaveData(headIndex, neckIndex);
     }
     
     public void LoadAccessoryData()
     {
-        string path = Path.Combine(Application.persistentDataPath, AccessorySaveFileName);
-
-        if (!File.Exists(path))
-        {
-            Debug.LogWarning("Save file not found. No data to load.");
-            return;
-        }
-
-        string json = File.ReadAllText(path);
-        AccessorySaveData saveData = JsonUtility.FromJson<AccessorySaveData>(json);
+        var saveData = dataHandler.LoadData();
 
         SetAccessoryFromIndex(saveData.HeadAccessoryIndex, accessoriesData.HeadAccessories, headAccessorySlot, ref currentHeadAccessory);
         SetAccessoryFromIndex(saveData.NeckAccessoryIndex, accessoriesData.NeckAccessories, neckAccessorySlot, ref currentNeckAccessory);

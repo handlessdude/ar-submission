@@ -28,6 +28,7 @@ TagManager:
   - TabSwitcher
   - SurfaceManager
   - ThrowBehaviour
+  - AccessoryDataHandler
   layers:
   - Default
   - TransparentFX

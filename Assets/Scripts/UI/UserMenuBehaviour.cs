@@ -17,6 +17,8 @@ public class UserMenuBehaviour : MonoBehaviour
 
     private void Awake()
     {
+		MyLogger.Log("Awake UserMenuBehaviour");
+
 		var tabCarousel = ComponentFinder.FindChildWithTag(gameObject, "TabSwitcher");
         modelValueText = ComponentFinder.FindChildWithTag(tabCarousel, "ModelValue").GetComponent<TextMeshProUGUI>();
         BackButton = ComponentFinder.FindChildWithTag(gameObject, "BackButton").GetComponent<Button>();
@@ -28,6 +30,7 @@ public class UserMenuBehaviour : MonoBehaviour
         if (ActionsTab == null)
         {
             Debug.LogError("ActionsTab not found as a child of Carousel.");
+			MyLogger.Log("ActionsTab not found as a child of Carousel.");
         }
         else
         {
@@ -36,6 +39,7 @@ public class UserMenuBehaviour : MonoBehaviour
         if (WardrobeTab == null)
         {
             Debug.LogError("WardrobeTab not found as a child of Carousel.");
+			MyLogger.Log("WardrobeTab not found as a child of Carousel.");
         }
         else
         {
@@ -45,6 +49,7 @@ public class UserMenuBehaviour : MonoBehaviour
         if (BackButton == null)
         {
             Debug.LogError("BackButton not found as a child of Carousel.");
+			MyLogger.Log("BackButton not found as a child of Carousel.");
         }
         else
         {
@@ -53,6 +58,7 @@ public class UserMenuBehaviour : MonoBehaviour
         if (NextButton == null)
         {
             Debug.LogError("NextButton not found as a child of Carousel.");
+			MyLogger.Log("NextButton not found as a child of Carousel.");
         }
         else
         {

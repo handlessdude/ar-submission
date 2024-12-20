@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7403031925380417699
+--- !u!1 &1620893057919183120
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5306038298356070568}
-  - component: {fileID: 4778183853164655644}
+  - component: {fileID: 4187712096686880379}
+  - component: {fileID: 734616098979281612}
   m_Layer: 0
-  m_Name: ThrowBallBehaviour
+  m_Name: ThrowBehaviour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5306038298356070568
+--- !u!4 &4187712096686880379
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7403031925380417699}
+  m_GameObject: {fileID: 1620893057919183120}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 511.5, y: 298, z: 0}
@@ -32,22 +32,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4778183853164655644
+--- !u!114 &734616098979281612
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7403031925380417699}
+  m_GameObject: {fileID: 1620893057919183120}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c6124e9b260d4c4db9ccc6fe4b5282b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arCamera: {fileID: 0}
-  ballPrefab: {fileID: 8450469611575305033, guid: b531ccce5d930c74c8c881a60854a14f,
+  camera: {fileID: 0}
+  throwablePrefabs:
+  - {fileID: 4735221276784898094, guid: 5c58fb2d7ad52444f85fc37bcad1f0a5, type: 3}
+  - {fileID: 9021341963992688662, guid: 55b25ac4480826449a69ce373cd44802, type: 3}
+  arrowPrefab: {fileID: 3037296349370795917, guid: 5d8ecd31464b6014b9ce6a93f1861f76,
     type: 3}
-  arrowPrefab: {fileID: 3037296349370795917, guid: 0ed100f03af76804b918522ba6b9520e,
-    type: 3}
-  throwModeButton: {fileID: 0}
   throwForce: 300

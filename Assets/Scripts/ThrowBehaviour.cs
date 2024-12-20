@@ -5,7 +5,7 @@ using System;
 
 public class ThrowBehaviour : MonoBehaviour
 {
-    public Camera camera;
+    private Camera camera;
     public GameObject[] throwablePrefabs; // Array of throwable game object prefabs
     public GameObject arrowPrefab;
     public float throwForce = 0.25f;
@@ -18,6 +18,11 @@ public class ThrowBehaviour : MonoBehaviour
 
     public Action<GameObject> onThrowableThrown; // Action that will be invoked when the throwable is thrown
 
+    private void Start()
+    {
+        camera = Camera.main;
+    }
+    
     private void Update()
     {
         if (!isThrowModeActive) return;

@@ -29,6 +29,10 @@ TagManager:
   - SurfaceManager
   - ThrowBehaviour
   - AccessoryDataHandler
+  - MainMenuCanvas
+  - PreGameCanvas
+  - GameCanvas
+  - ExitButton
   layers:
   - Default
   - TransparentFX

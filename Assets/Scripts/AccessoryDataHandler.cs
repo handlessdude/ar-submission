@@ -1,48 +1,43 @@
 ﻿using System.IO;
 using UnityEngine;
 
-public class AccessoryDataHandler : MonoBehaviour
+public static class AccessoryDataHandler
 {
-    private const string FileName = "AccessoryData.json";
-
-    [System.Serializable]
-    public class AccessoryIndices
+    public static string GetLastSaveFileName()
     {
-        public int HeadAccessoryIndex = -1;
-        public int NeckAccessoryIndex = -1;
+        if (UserSavesManager.GetNumberOfSaves() == 0)
+        {
+            UserSavesManager.CreateNewEmptySave();
+        }
+        return UserSavesManager.GetLastSaveFileName();
     }
-
-    private string GetFilePath()
+    
+    public static void SaveData(int headIndex, int neckIndex)
     {
-        return Path.Combine(Application.persistentDataPath, FileName);
-    }
-
-    public void SaveData(int headIndex, int neckIndex)
-    {
-        AccessoryIndices data = new AccessoryIndices
+        UserSaveData data = new UserSaveData
         {
             HeadAccessoryIndex = headIndex,
             NeckAccessoryIndex = neckIndex
         };
 
         string json = JsonUtility.ToJson(data);
-        File.WriteAllText(GetFilePath(), json);
-        Debug.Log($"Accessory data saved: {json}");
+        File.WriteAllText(GetLastSaveFileName(), json);
+        MyLogger.Log($"Accessory data saved: {json}");
     }
 
-    public AccessoryIndices LoadData()
+    public static UserSaveData LoadData()
     {
-        string filePath = GetFilePath();
+        string filePath = GetLastSaveFileName();
 
         if (File.Exists(filePath))
         {
             string json = File.ReadAllText(filePath);
-            AccessoryIndices data = JsonUtility.FromJson<AccessoryIndices>(json);
-            Debug.Log($"Accessory data loaded: {json}");
+            UserSaveData data = JsonUtility.FromJson<UserSaveData>(json);
+            MyLogger.Log($"Accessory data loaded: {json}");
             return data;
         }
 
-        Debug.LogWarning("Accessory data file not found. Returning default data.");
-        return new AccessoryIndices(); // Return default data if no file exists
+        MyLogger.Log("Accessory data file not found. Returning default data.");
+        return new UserSaveData(); // Return default data if no file exists
     }
 }

@@ -17,17 +17,11 @@ public class WardrobeBehaviour : MonoBehaviour
     
     public event Action<string> OnNeckAccessoryChange;
     
-    private AccessoryDataHandler dataHandler;
-    
-    [Serializable]
-    private class AccessorySaveData
-    {
-        public int HeadAccessoryIndex;
-        public int NeckAccessoryIndex;
-    }
+    // private AccessoryDataHandler dataHandler;
     
     private void Start()
     {
+        /*
         var dataHandlerObject = GameObject.FindGameObjectWithTag("AccessoryDataHandler");
         if (dataHandlerObject != null)
         {
@@ -37,6 +31,7 @@ public class WardrobeBehaviour : MonoBehaviour
         {
             MyLogger.Log("AccessoryDataHandler not found");
         }
+        */
 
             
         // Find the pet game object by tag
@@ -179,12 +174,12 @@ public class WardrobeBehaviour : MonoBehaviour
         int headIndex = GetAccessoryIndex(accessoriesData.HeadAccessories, currentHeadAccessory);
         int neckIndex = GetAccessoryIndex(accessoriesData.NeckAccessories, currentNeckAccessory);
 
-        dataHandler.SaveData(headIndex, neckIndex);
+        AccessoryDataHandler.SaveData(headIndex, neckIndex);
     }
     
     public void LoadAccessoryData()
     {
-        var saveData = dataHandler.LoadData();
+        var saveData = AccessoryDataHandler.LoadData();
 
         SetAccessoryFromIndex(saveData.HeadAccessoryIndex, accessoriesData.HeadAccessories, headAccessorySlot, ref currentHeadAccessory);
         SetAccessoryFromIndex(saveData.NeckAccessoryIndex, accessoriesData.NeckAccessories, neckAccessorySlot, ref currentNeckAccessory);
@@ -192,7 +187,7 @@ public class WardrobeBehaviour : MonoBehaviour
         OnHatAccessoryChange?.Invoke(getAccessoryType(ref currentHeadAccessory));
         OnNeckAccessoryChange?.Invoke(getAccessoryType(ref currentNeckAccessory));
         
-        Debug.Log("Accessory data loaded.");
+        MyLogger.Log($"Accessory data loaded: head {saveData.HeadAccessoryIndex}; neck {saveData.NeckAccessoryIndex}");
     }
 
     public void ResetAccessories()

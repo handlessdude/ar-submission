@@ -48,6 +48,12 @@ public class WorldManager : MonoBehaviour
             UpdateCurrentPlane();
             TryLockCurrentPlane();
         }
+
+        if (SurfaceManager.LockedPlane != null && WorldInstance != null)
+        {
+            var worldOriginPosition = WorldInstance.transform.position;
+            worldOriginPosition.Set(worldOriginPosition.x, SurfaceManager.LockedPlane.center.y, worldOriginPosition.z);
+        }
     }
     
     private void UpdateCurrentPlane()
@@ -99,27 +105,6 @@ public class WorldManager : MonoBehaviour
                     }
                 }
             }
-            
-            /*if (RaycastToPlane(touchPosition, out Vector3 hitPosition))
-            {
-                WorldInstance = Instantiate(WorldPrefab, hitPosition, Quaternion.identity);
-
-                SurfaceManager.LockPlane(CurrentPlane);
-            }*/
         }
-    }
-    
-    private bool RaycastToPlane(Vector2 screenPoint, out Vector3 hitPosition)
-    {
-        var hits = new List<ARRaycastHit>();
-
-        if (SurfaceManager.RaycastManager.Raycast(screenPoint, hits, TrackableType.PlaneWithinBounds))
-        {
-            hitPosition = hits[0].pose.position;
-            return true;
-        }
-
-        hitPosition = Vector3.zero;
-        return false;
     }
 }

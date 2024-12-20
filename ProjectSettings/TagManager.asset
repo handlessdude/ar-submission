@@ -33,6 +33,11 @@ TagManager:
   - PreGameCanvas
   - GameCanvas
   - ExitButton
+  - ContinueButton
+  - NewPetButton
+  - ClearButton
+  - MenuContainer
+  - LoadingCaption
   layers:
   - Default
   - TransparentFX

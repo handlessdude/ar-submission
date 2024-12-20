@@ -34,9 +34,11 @@ public class WorldManager : MonoBehaviour
     
     private ARPlane CurrentPlane;
 
+    private Camera arCamera;
+    
     private void Start()
     {
-    
+        arCamera = Camera.main;
     }
 
     private void Update()
@@ -59,47 +61,65 @@ public class WorldManager : MonoBehaviour
         ARRaycastHit? hit = null;
         if (hits.Count > 0)
         {
-            // If you don't have a locked plane already...
             var lockedPlane = SurfaceManager.LockedPlane;
             hit = lockedPlane == null
-                // ... use the first hit in `hits`.
                 ? hits[0]
-                // Otherwise use the locked plane, if it's there.
                 : hits.SingleOrDefault(x => x.trackableId == lockedPlane.trackableId);
         }
         if (hit.HasValue)
         {
             CurrentPlane = SurfaceManager.PlaneManager.GetPlane(hit.Value.trackableId);
-            // Move this reticle to the location of the hit.
-            // transform.position = hit.Value.pose.position;
         }
-
-        /*if (WorldInstance != null)
-        {
-            WorldInstance.SetActive(CurrentPlane != null);
-        }*/
     }
     
     private void TryLockCurrentPlane()
     {
-        if (WorldInstance == null && WasTapped() && CurrentPlane != null)
+        if (
+            WorldInstance == null
+            && CurrentPlane != null
+            && Touchscreen.current != null
+            && Touchscreen.current.primaryTouch.press.isPressed
+            )
         {
-            // Spawn our car at the reticle location.
-            WorldInstance = GameObject.Instantiate(WorldPrefab);
+            var touchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
+            var hits = new List<ARRaycastHit>();
+
+            if (SurfaceManager.RaycastManager.Raycast(touchPosition, hits, TrackableType.PlaneWithinBounds))
+            {
+                foreach (var hit in hits)
+                {
+                    if (hit.trackableId == CurrentPlane.trackableId)
+                    {
+                        Vector3 hitPosition = hit.pose.position;
+
+                        WorldInstance = Instantiate(WorldPrefab, hitPosition, Quaternion.identity);
+
+                        SurfaceManager.LockPlane(CurrentPlane);
+                        return;
+                    }
+                }
+            }
             
-            // WorldInstance.transform.position = Vector3.zero(); // тут ворлд в 0 0 0 поместить
-            
-            SurfaceManager.LockPlane(CurrentPlane);
+            /*if (RaycastToPlane(touchPosition, out Vector3 hitPosition))
+            {
+                WorldInstance = Instantiate(WorldPrefab, hitPosition, Quaternion.identity);
+
+                SurfaceManager.LockPlane(CurrentPlane);
+            }*/
         }
     }
-
-    private bool WasTapped()
+    
+    private bool RaycastToPlane(Vector2 screenPoint, out Vector3 hitPosition)
     {
-        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
+        var hits = new List<ARRaycastHit>();
+
+        if (SurfaceManager.RaycastManager.Raycast(screenPoint, hits, TrackableType.PlaneWithinBounds))
         {
+            hitPosition = hits[0].pose.position;
             return true;
         }
 
+        hitPosition = Vector3.zero;
         return false;
     }
 }

@@ -1,11 +1,18 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
-using System;
+using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
 
+using Unity.Collections;
 public class PetBehavior : MonoBehaviour
 {
+    public SurfaceManager SurfaceManager;
     private NavMeshAgent agent;
     private Vector3 originalPosition;
     private bool isUserDragging = false;
@@ -31,6 +38,19 @@ public class PetBehavior : MonoBehaviour
         originalPosition = transform.position;
         mouthSlot = ComponentFinder.FindChildWithTag(gameObject, "MouthSlot").transform;
         
+        // todo: добавить throw manager 
+        GameObject surfaceManagerObject = GameObject.FindWithTag("SurfaceManager");
+        if (surfaceManagerObject != null)
+        {
+            SurfaceManager = surfaceManagerObject.GetComponent<SurfaceManager>();
+            // MyLogger.Log("SurfaceManager found");
+        }
+        else
+        {
+            MyLogger.Log("SurfaceManager not found in the scene. Ensure it has the correct tag.");
+            Debug.LogError("SurfaceManager not found in the scene. Ensure it has the correct tag.");
+            enabled = false;
+        }
         // Ensure the NavMeshAgent is placed on a NavMesh
         if (!agent.isOnNavMesh)
         {
@@ -68,7 +88,7 @@ public class PetBehavior : MonoBehaviour
         }
     }
 
-    private Ray getScreenPointToRay()
+    private Vector2 getInputPosition()
     {
         Vector2 inputPosition;
         if (Touchscreen.current?.primaryTouch.press.isPressed == true)
@@ -81,8 +101,14 @@ public class PetBehavior : MonoBehaviour
         }
         else
         {
-            return new Ray();
+            return new Vector2();
         }
+        return inputPosition;
+    }
+    
+    private Ray getScreenPointToRay()
+    {
+        Vector2 inputPosition = getInputPosition();
         return Camera.main.ScreenPointToRay(inputPosition);
     }
     
@@ -108,12 +134,39 @@ public class PetBehavior : MonoBehaviour
             }
         }
 
-        if ((Mouse.current?.leftButton.isPressed == true || Touchscreen.current?.primaryTouch.press.isPressed == true) && isUserDragging)
+        if (
+            (Mouse.current?.leftButton.isPressed == true || Touchscreen.current?.primaryTouch.press.isPressed == true)
+            && isUserDragging
+            )
         {
+            /*
             Ray ray = getScreenPointToRay();
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 targetPosition = hit.point; // Update the target position
+            }
+            */
+            if (SurfaceManager.LockedPlane == null)
+            {
+                MyLogger.Log("SurfaceManager.LockedPlane is null!");
+            }
+            else
+            {
+                var touchPosition = getInputPosition();
+                var hits = new List<ARRaycastHit>();
+                if (SurfaceManager.RaycastManager.Raycast(touchPosition, hits, TrackableType.PlaneWithinBounds))
+                {
+                    foreach (var hit in hits)
+                    {
+                        if (hit.trackableId == SurfaceManager.LockedPlane.trackableId)
+                        {
+                            Vector3 hitPosition = hit.pose.position;
+    
+                            targetPosition = hitPosition;
+                            return;
+                        }
+                    }
+                }
             }
         }
 
@@ -131,7 +184,7 @@ public class PetBehavior : MonoBehaviour
             }
         }
     }
-
+    
     void UpdateArrowDirection()
     {
         if (arrowInstance != null)
@@ -145,7 +198,7 @@ public class PetBehavior : MonoBehaviour
             arrowInstance.transform.rotation = Quaternion.LookRotation(direction);
         }
     }
-
+    
     void HandleArrivalAtTarget()
     {
         animator.SetInteger("AnimationID", ANIMATION_ID_BREATHING);

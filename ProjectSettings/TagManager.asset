@@ -26,6 +26,7 @@ TagManager:
   - Actions
   - Wardrobe
   - TabSwitcher
+  - SurfaceManager
   layers:
   - Default
   - TransparentFX

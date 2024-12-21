@@ -17,7 +17,7 @@ public class ThrowButtonBehaviour : MonoBehaviour
         {
             button.onClick.AddListener(() =>
             {
-                throwBehaviour.ActivateThrowMode(throwableID);
+                throwBehaviour.ToggleThrowMode(throwableID);
             });
         }
     }

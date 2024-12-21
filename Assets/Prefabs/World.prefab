@@ -45,6 +45,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6646840390273307799}
     m_Modifications:
+    - target: {fileID: 734616098979281612, guid: 07049668044d0874cafbdc0c11ae5444,
+        type: 3}
+      propertyPath: throwableButtons.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 734616098979281612, guid: 07049668044d0874cafbdc0c11ae5444,
+        type: 3}
+      propertyPath: throwableButtons.Array.data[0]
+      value: 
+      objectReference: {fileID: 4829791034985057840}
+    - target: {fileID: 734616098979281612, guid: 07049668044d0874cafbdc0c11ae5444,
+        type: 3}
+      propertyPath: throwableButtons.Array.data[1]
+      value: 
+      objectReference: {fileID: 618502703519617502}
     - target: {fileID: 1620893057919183120, guid: 07049668044d0874cafbdc0c11ae5444,
         type: 3}
       propertyPath: m_Name
@@ -694,6 +709,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 498826360459000325, guid: 8ea8966d195e21b41a7bab5fa54bf89b,
+        type: 3}
+      propertyPath: m_Name
+      value: BoneButton
+      objectReference: {fileID: 0}
     - target: {fileID: 1147898684756535058, guid: 8ea8966d195e21b41a7bab5fa54bf89b,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -989,6 +1009,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5584373770967262699, guid: 8ea8966d195e21b41a7bab5fa54bf89b,
+        type: 3}
+      propertyPath: m_Name
+      value: BallButton
+      objectReference: {fileID: 0}
     - target: {fileID: 5597272038801960333, guid: 8ea8966d195e21b41a7bab5fa54bf89b,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1139,6 +1164,30 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ea8966d195e21b41a7bab5fa54bf89b, type: 3}
+--- !u!114 &618502703519617502 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8557363652151026440, guid: 8ea8966d195e21b41a7bab5fa54bf89b,
+    type: 3}
+  m_PrefabInstance: {fileID: 9103041525443130070}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4829791034985057840 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4418696795199929574, guid: 8ea8966d195e21b41a7bab5fa54bf89b,
+    type: 3}
+  m_PrefabInstance: {fileID: 9103041525443130070}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7509777878631850296 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1615832636286751726, guid: 8ea8966d195e21b41a7bab5fa54bf89b,

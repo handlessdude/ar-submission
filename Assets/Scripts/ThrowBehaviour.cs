@@ -2,6 +2,8 @@
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using System;
+using System.Collections.Generic;
+using TMPro;
 
 public class ThrowBehaviour : MonoBehaviour
 {
@@ -12,10 +14,15 @@ public class ThrowBehaviour : MonoBehaviour
 
     private GameObject currentArrow;
     private GameObject currentThrowable; // The currently selected throwable
+    private int currentThrowableIndex;
+    
     private Vector3 targetPoint;
     private bool isThrowModeActive = false;
     private bool isTouching = false;
-
+    private Color ACTIVE_MODE_COLOR = new Color(0f, 0.7f, 0.9f);
+    
+    [SerializeField] public List<Button> throwableButtons;
+    
     public bool IsTouching
     {
         get => isTouching;
@@ -72,14 +79,38 @@ public class ThrowBehaviour : MonoBehaviour
         }
     }
     
-    public void ActivateThrowMode(int throwableIndex = 0)
+    public void ToggleThrowMode(int throwableIndex = 0)
     {
-        isThrowModeActive = true;
-		SetCurrentThrowable(throwableIndex);
+        if (isThrowModeActive)
+        {
+            if (throwableIndex == currentThrowableIndex)
+            {
+                DeactivateThrowMode();
+            }
+            else
+            {
+                SetCurrentThrowable(throwableIndex);
+            }
+        }
+        else
+        {
+             isThrowModeActive = true;
+             SetCurrentThrowable(throwableIndex);
+        }
     }
 
+    private void SetButtonTextColor(int index, Color color)
+    {
+        TMP_Text buttonText = throwableButtons[currentThrowableIndex].GetComponentInChildren<TMP_Text>();
+        if (buttonText != null)
+        {
+            buttonText.color = color;
+        }
+    }
+    
     private void DeactivateThrowMode()
     {
+         SetButtonTextColor(currentThrowableIndex,  Color.white);
         isThrowModeActive = false;
     }
 
@@ -115,7 +146,12 @@ public class ThrowBehaviour : MonoBehaviour
     {
         if (index >= 0 && index < throwablePrefabs.Length)
         {
+            SetButtonTextColor(currentThrowableIndex,  Color.white);
+            
             currentThrowable = throwablePrefabs[index];
+            currentThrowableIndex = index;
+            
+            SetButtonTextColor(currentThrowableIndex, ACTIVE_MODE_COLOR);
         }
         else
         {

@@ -38,6 +38,7 @@ TagManager:
   - ClearButton
   - MenuContainer
   - LoadingCaption
+  - DraggingCaption
   layers:
   - Default
   - TransparentFX

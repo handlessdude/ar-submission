@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 using System.Linq;
+using System.Collections;
 
 public class EditPetMenuBehaviour : MonoBehaviour
 {
@@ -11,9 +12,12 @@ public class EditPetMenuBehaviour : MonoBehaviour
 
     private GameObject neckAccessoryCarousel;
     private TextMeshProUGUI neckAccessoryCarouselText;
+    
+    private GameObject DraggingCaption;
 
     private void OnEnable()
     {
+        
         InitializeHatCarousel();
         InitializeNeckAccessoryCarousel();
         
@@ -25,6 +29,25 @@ public class EditPetMenuBehaviour : MonoBehaviour
         else
         {
             Debug.LogError("WardrobeBehaviour component not identified.");
+        }
+        
+        DraggingCaption = GameObject.FindGameObjectWithTag("DraggingCaption");
+        if (DraggingCaption == null)
+        {
+            MyLogger.Log("DraggingCaption not found");
+        }
+        else
+        {
+            StartCoroutine(HideDraggingCaption()); 
+        }
+    }
+    
+    IEnumerator HideDraggingCaption()
+    {
+        yield return new WaitForSeconds(5f);
+        if (DraggingCaption != null)
+        {
+            DraggingCaption.SetActive(false);
         }
     }
     

@@ -32,6 +32,8 @@ public class WorldManager : MonoBehaviour
     
     private GameObject WorldInstance;
     
+    private GameObject PreGameCanvas;
+    
     private ARPlane CurrentPlane;
 
     private Camera arCamera;
@@ -39,6 +41,11 @@ public class WorldManager : MonoBehaviour
     private void Start()
     {
         arCamera = Camera.main;
+        PreGameCanvas = GameObject.FindGameObjectWithTag("PreGameCanvas");
+        if (PreGameCanvas == null)
+        {
+            MyLogger.Log("PreGameCanvas not found");
+        }
     }
 
     private void Update()
@@ -98,6 +105,7 @@ public class WorldManager : MonoBehaviour
                     {
                         Vector3 hitPosition = hit.pose.position;
 
+                        PreGameCanvas.SetActive(false);
                         WorldInstance = Instantiate(WorldPrefab, hitPosition, Quaternion.identity);
 
                         SurfaceManager.LockPlane(CurrentPlane);

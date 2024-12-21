@@ -59,7 +59,8 @@ public class WorldManager : MonoBehaviour
         if (SurfaceManager.LockedPlane != null && WorldInstance != null)
         {
             var worldOriginPosition = WorldInstance.transform.position;
-            worldOriginPosition.Set(worldOriginPosition.x, SurfaceManager.LockedPlane.center.y, worldOriginPosition.z);
+            worldOriginPosition.y = SurfaceManager.LockedPlane.center.y;
+            WorldInstance.transform.position = worldOriginPosition;
         }
     }
     

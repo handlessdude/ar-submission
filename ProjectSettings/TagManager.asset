@@ -39,6 +39,7 @@ TagManager:
   - MenuContainer
   - LoadingCaption
   - DraggingCaption
+  - UserMenu
   layers:
   - Default
   - TransparentFX

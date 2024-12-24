@@ -40,6 +40,9 @@ TagManager:
   - LoadingCaption
   - DraggingCaption
   - UserMenu
+  - Settings
+  - LightIntensitySlider
+  - SettingsManager
   layers:
   - Default
   - TransparentFX

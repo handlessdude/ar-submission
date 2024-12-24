@@ -426,6 +426,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ARCameraManager: {fileID: 2512387468973847747}
   Light: {fileID: 0}
+  settingsManager: {fileID: 1956721069}
 --- !u!1001 &430633548
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1182,6 +1183,51 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8752705094215144399}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1956721067
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1956721068}
+  - component: {fileID: 1956721069}
+  m_Layer: 0
+  m_Name: SettingsManager
+  m_TagString: SettingsManager
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1956721068
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956721067}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 586.39954, y: 217.58797, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1956721069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956721067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d56e192c957b4c9c835634d4ad697810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefKey: LightIntensityModifier
 --- !u!1001 &2059817235
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1831,3 +1877,4 @@ SceneRoots:
   - {fileID: 612590714}
   - {fileID: 8595085343956627425}
   - {fileID: 2059817235}
+  - {fileID: 1956721068}

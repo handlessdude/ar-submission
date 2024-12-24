@@ -19,42 +19,98 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Light))]
 public class LightEstimation : MonoBehaviour
 {
     public ARCameraManager ARCameraManager;
     public Light Light;
+    private SettingsManager settingsManager;
 
+    private float lightIntensityModifier = 1f;
+    
+    private float initialLightIntensity = 1f;
+    
     private void Start()
     {
         ARCameraManager.frameReceived += FrameReceived;
 
         Light = GetComponent<Light>();
+        initialLightIntensity = Light.intensity;
+        
+        InitializeSettingsManager();
     }
 
+    private void InitializeSettingsManager()
+    {
+        var settingsManagerObject = GameObject.FindGameObjectWithTag("SettingsManager");
+        if (settingsManagerObject != null)
+        {
+            settingsManager = settingsManagerObject.GetComponent<SettingsManager>();
+            UpdateLightIntensityModifier(settingsManager.LightIntensity);
+            settingsManager.OnLightIntensityModifierChange += UpdateLightIntensityModifier;
+            UpdateLightIntensityFromInitial();
+        }
+        else
+        {
+            MyLogger.Log("SettingsManager not found!");
+        }
+    }
+
+    private void onDestroy()
+    {
+        settingsManager.OnLightIntensityModifierChange -= UpdateLightIntensityModifier;
+    }
+    
+    private void UpdateLightIntensityModifier(float value)
+    {
+        lightIntensityModifier = value;
+    }
+    
+    private void UpdateLightIntensityFromInitial()
+    {
+        MyLogger.Log($"{lightIntensityModifier}");
+        Light.intensity = initialLightIntensity * lightIntensityModifier;
+    }
+    
     private void FrameReceived(ARCameraFrameEventArgs args)
     {
         ARLightEstimationData lightEstimation = args.lightEstimation;
-
+        
         if (lightEstimation.averageBrightness.HasValue)
-            Light.intensity = lightEstimation.averageBrightness.Value;
-
+        {
+            Light.intensity = lightEstimation.averageBrightness.Value * lightIntensityModifier;
+        }
+        else if (lightEstimation.mainLightIntensityLumens.HasValue)
+        {
+            Light.intensity = lightEstimation.averageMainLightBrightness.Value * lightIntensityModifier;
+        }
+        else
+        {
+            UpdateLightIntensityFromInitial();
+        }
+        
         if (lightEstimation.averageColorTemperature.HasValue)
+        {
             Light.colorTemperature = lightEstimation.averageColorTemperature.Value;
+        }
 
         if (lightEstimation.colorCorrection.HasValue)
+        {
             Light.color = lightEstimation.colorCorrection.Value;
+        }
 
         if (lightEstimation.mainLightDirection.HasValue)
+        {
             Light.transform.rotation = Quaternion.LookRotation(lightEstimation.mainLightDirection.Value);
+        }
 
         if (lightEstimation.mainLightColor.HasValue)
+        {
             Light.color = lightEstimation.mainLightColor.Value;
-
-        if (lightEstimation.mainLightIntensityLumens.HasValue)
-            Light.intensity = lightEstimation.averageMainLightBrightness.Value;
-
+        }
+        
         if (lightEstimation.ambientSphericalHarmonics.HasValue)
         {
             RenderSettings.ambientMode = AmbientMode.Skybox;

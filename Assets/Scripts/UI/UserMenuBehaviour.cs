@@ -10,6 +10,7 @@ public class UserMenuBehaviour : MonoBehaviour
     private Button NextButton;
     private GameObject ActionsTab;
     private GameObject WardrobeTab;
+    private GameObject SettingsTab;
   	private TextMeshProUGUI modelValueText;
  
     private int currentTabIndex = 0;
@@ -26,17 +27,19 @@ public class UserMenuBehaviour : MonoBehaviour
 
         ActionsTab = ComponentFinder.FindChildWithTag(gameObject, "Actions");
         WardrobeTab = ComponentFinder.FindChildWithTag(gameObject, "Wardrobe");
+        SettingsTab = ComponentFinder.FindChildWithTag(gameObject, "Settings");
         
         
-         if (WardrobeTab == null)
-         {
-             Debug.LogError("WardrobeTab not found as a child of Carousel.");
-             MyLogger.Log("WardrobeTab not found as a child of Carousel.");
-         }
-         else
-         {
-             tabs = tabs.Append(WardrobeTab).ToArray();
-         }
+        if (WardrobeTab == null)
+        {
+            Debug.LogError("WardrobeTab not found as a child of Carousel.");
+            MyLogger.Log("WardrobeTab not found as a child of Carousel.");
+        }
+        else
+        {
+            tabs = tabs.Append(WardrobeTab).ToArray();
+        }
+        
         if (ActionsTab == null)
         {
             Debug.LogError("ActionsTab not found as a child of Carousel.");
@@ -45,6 +48,16 @@ public class UserMenuBehaviour : MonoBehaviour
         else
         {
             tabs = tabs.Append(ActionsTab).ToArray();
+        }
+        
+        if (SettingsTab == null)
+        {
+            Debug.LogError("SettingsTab not found as a child of Carousel.");
+			MyLogger.Log("SettingsTab not found as a child of Carousel.");
+        }
+        else
+        {
+            tabs = tabs.Append(SettingsTab).ToArray();
         }
         
         if (BackButton == null)
